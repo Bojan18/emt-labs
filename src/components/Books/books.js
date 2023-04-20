@@ -12,7 +12,8 @@ const books = (props) => {
                             <th scope={"col"}>Name</th>
                             <th scope={"col"}>Category</th>
                             <th scope={"col"}>Author</th>
-                            <th scope={"col"}>Available copies</th>
+                            <th scope={"col"} >Available copies</th>
+                            <th scope={"col"}>Delete/Edit Book</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -23,10 +24,25 @@ const books = (props) => {
                                     <td>{term.category}</td>
                                     <td>{term.author.name}</td>
                                     <td>{term.availableCopies}</td>
-                                    <td scope={"col"} className={"text-right"}>
-                                        <a title={"Delete"} className={"btn btn-danger"}
-                                        onClick={() => props.onDelete(term.book_id)}>Delete</a>
-                                    </td>
+                                    {/*<td scope={"col"} className={"text-right"}>*/}
+                                    {/*    <a title={"Delete"} className={"btn btn-danger"}*/}
+                                    {/*    onClick={() => props.onDelete(term.book_id)}>Delete</a>*/}
+                                    {/*</td>*/}
+                                    <Link className={"btn btn-danger ml-2"}
+                                          onClick={() => props.onDelete(term.book_id)}
+                                          to={"/books"}>
+                                        Delete
+                                    </Link>
+                                    <Link className={"btn btn-dark ml-2"}
+                                          onClick={() => props.onEdit(term.book_id)}
+                                          to={`/books/edit/${term.book_id}`}>
+                                        Edit
+                                    </Link>
+
+                                    <Link className={"btn btn-info ml-2"}
+                                    onClick={()=> props.onRent(term.book_id)}>
+                                        Mark as Taken
+                                    </Link>
                                 </tr>
                             );
                         })}

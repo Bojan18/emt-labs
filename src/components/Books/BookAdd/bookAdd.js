@@ -9,7 +9,9 @@ const BookAdd = (props) => {
         name: "",
         category: 1,
         authorId: 1,
-        availableCopies: 0
+        availableCopies: 0,
+        rentalStatus:1,
+        condition:1
     })
 
     const handleChange = (e) => {
@@ -25,8 +27,10 @@ const BookAdd = (props) => {
         const category = formData.category;
         const authorId = formData.authorId;
         const availableCopies = formData.availableCopies;
+        const rentalStatus = formData.rentalStatus;
+        const condition = formData.condition;
 
-        props.onAddBook(name, category, authorId, availableCopies);
+        props.onAddBook(name, category, authorId, availableCopies, rentalStatus, condition);
         navigate("/books");
     }
 
@@ -71,6 +75,22 @@ const BookAdd = (props) => {
                                required
                                onChange={handleChange}
                         />
+                    </div>
+                    <div className="form-group">
+                        <label>rentalStatus</label>
+                        <select name="rentalStatus" id="rentalStatus" className="form-control" onChange={handleChange}>
+                            {props.rentalStatus.map((term) =>
+                                <option value={term}>{term}</option>
+                            )}
+                        </select>
+                    </div>
+                    <div className="form-group">
+                        <label>condition</label>
+                        <select name="condition" id="condition" className="form-control" onChange={handleChange}>
+                            {props.condition.map((term) =>
+                                <option value={term}>{term}</option>
+                            )}
+                        </select>
                     </div>
                     <button id="submit" type="submit" className="btn btn-primary">Submit</button>
                 </form>

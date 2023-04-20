@@ -1,7 +1,7 @@
 import './App.css';
 import {Component} from "react";
 import React from "react";
-import {Navigate, Route, BrowserRouter as Router, Routes} from "react-router-dom";
+import {Navigate, Route, BrowserRouter as Router, Routes, Link} from "react-router-dom";
 import Authors from "../Authors/authors";
 import Categories from "../Categories/categories";
 import authors from "../Authors/authors";
@@ -12,15 +12,9 @@ import Countries from "../Countries/countries";
 import Books from "../Books/books";
 import BookAdd from "../Books/BookAdd/bookAdd";
 import Header from "../Header/header";
-
-// function App() {
-//   return (
-//       <div>
-//         <h1>EMT Labs 2023</h1>
-//       </div>
-//   );
-// }
-
+import RentalStatus from "../RentalStatus/rentalStatus";
+import Condition from "../Condition/condition";
+import BookEdit from "../Books/BookEdit/BookEdit";
 class App extends Component {
     constructor(props) {
         super(props);
@@ -28,7 +22,9 @@ class App extends Component {
             authors: [],
             categories: [],
             countries: [],
+            rentalStatus: [],
             books: [],
+            selectedBook: {}
         };
     }
 
@@ -37,6 +33,8 @@ class App extends Component {
         this.loadCategories();
         this.loadCountries();
         this.loadBooks();
+        this.loadRentalStatus();
+        this.loadConditions();
     }
 
     render() {
@@ -48,15 +46,27 @@ class App extends Component {
                     <main>
                         <div className={"container"}>
                             <Routes>
-                                <Route path={"/books"} exact element={<Books books={this.state.books} onDelete={this.deleteBook}/>}></Route>
-                                {/*<Route path={"/books/add"} exact element={() => <BookAdd/>}/>*/}
+                                <Route path={"/books"} exact element={<Books books={this.state.books}
+                                                                             onDelete={this.deleteBook}
+                                                                             onEdit={this.editBook}/>}></Route>
                                 <Route path={"/books/add"} exact element={<BookAdd books={this.state.books}
                                                                                    authors={this.state.authors}
                                                                                    categories={this.state.categories}
+                                                                                   rentalStatus={this.state.rentalStatus}
+                                                                                   condition={this.state.condition}
                                                                                    onAddBook={this.addBook}/>}/>
+                                <Route path={`/books/edit:id`} exact element={<BookEdit books={this.state.books}
+                                                                                   authors={this.state.authors}
+                                                                                   categories={this.state.categories}
+                                                                                   rentalStatus={this.state.rentalStatus}
+                                                                                   condition={this.state.condition}
+                                                                                   onEditBook={this.editBook}
+                                                                                        book={this.state.selectedBook}/>}/>
                                 <Route path={"/authors"} exact element={<Authors authors={this.state.authors}/>}></Route>
                                 <Route path={"/countries"} exact element={<Countries countries={this.state.countries}/>}></Route>
                                 <Route path={"/categories"} exact element={<Categories categories={this.state.categories}/>}></Route>
+                                <Route path={"/rentalStatus"} exact element={<RentalStatus rentalStatus={this.state.rentalStatus}/>}></Route>
+                                <Route path={"/condition"} exact element={<Condition condition={this.state.condition}/>}></Route>
                             </Routes>
                         </div>
                     </main>
@@ -79,6 +89,24 @@ class App extends Component {
             .then((data) => {
                 this.setState({
                     categories: data.data
+                })
+            });
+    }
+
+    loadRentalStatus = () => {
+        BooksService.fetchRentalStatus()
+            .then((data) => {
+                this.setState({
+                    rentalStatus: data.data
+                })
+            });
+    }
+
+    loadConditions = () => {
+        BooksService.fetchCondition()
+            .then((data) => {
+                this.setState({
+                    condition: data.data
                 })
             });
     }
@@ -113,6 +141,21 @@ class App extends Component {
             .then(() => {
                 this.loadBooks();
             });
+    }
+    getBook = (id) => {
+        BooksService.getBook(id)
+            .then((data) => {
+                this.setState({
+                    selectedBook: data.data
+                });
+            })
+    }
+
+    editBook = (book_id, name, category, author_id, availableCopies, rentalStatus, condition) => {
+        BooksService.editBook(book_id, name, category, author_id, availableCopies, rentalStatus, condition)
+            .then(() => {
+                this.loadBooks();
+            })
     }
 
 }

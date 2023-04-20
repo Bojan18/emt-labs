@@ -11,15 +11,34 @@ const BooksService = {
         return axios.get("/countries")
     },
     fetchBooks: () => {
-        return axios.get("books")
+        return axios.get("/books")
+    },
+    fetchRentalStatus: () => {
+        return axios.get("/rentalStatus")
+    },
+    fetchCondition: () => {
+        return axios.get("/condition")
     },
     deleteBook: (id) => {
         return axios.delete(`/books/delete/${id}`)
     },
-    addBook: (name, category, author, availableCopies, rentalStatus, condition) => {
+    getBook: (id) => {
+        return axios.get(`/books/${id}`);
+    },
+    addBook: (name, category, author_id, availableCopies, rentalStatus, condition) => {
         return axios.post("books/add", {
             "name" : name,
-            "author" : author,
+            "author_id" : author_id,
+            "availableCopies" : availableCopies,
+            "rentalStatus" : rentalStatus,
+            "condition" : condition
+        })
+    },
+    editBook: (id, name, category, author_id, availableCopies, rentalStatus, condition) => {
+        return axios.put(`books/edit/${id}`, {
+            "name" : name,
+            "category": category,
+            "author_id" : author_id,
             "availableCopies" : availableCopies,
             "rentalStatus" : rentalStatus,
             "condition" : condition

@@ -1,19 +1,18 @@
 import React from "react";
-import {Link} from "react-router-dom";
 
-const categories = (props) => {
+const condition = (props) => {
     return (
         <div className={"container mm-4 mt-5"}>
             <div className={"row"}>
                 <div className={"row"}>
                     <table className={"table table-striped table-primary text-center"}>
                         <thead className={"table-dark"}>
-                            <tr>
-                                <th scope={"col"}>Category name</th>
-                            </tr>
+                        <tr>
+                            <th scope={"col"}>Condition</th>
+                        </tr>
                         </thead>
                         <tbody>
-                        {Array.isArray(props.categories) && props.categories.map((term) =>{
+                        {Array.isArray(props.condition) && props.condition.map((term) =>{
                             return (
                                 <tr>
                                     <td>{term}</td>
@@ -28,4 +27,4 @@ const categories = (props) => {
     )
 }
 
-export default categories;
+export default condition;
